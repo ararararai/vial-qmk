@@ -51,12 +51,6 @@ enum layers {
 #define LOWER   MO(_LOWER)
 #define RAISE   MO(_RAISE)
 
-#define KC_LANG1  KC_LANGUAGE_1
-#define KC_LANG2  KC_LANGUAGE_2
-#define KC_HENK   KC_INT4
-#define KC_MHEN   KC_INT5
-#define KC_BSPACE KC_BSPC
-
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 /* Qwerty
@@ -164,10 +158,10 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 update_tri_layer(_LOWER, _RAISE, _ADJUST);
 
                 if (lower_pressed && (TIMER_DIFF_16(record->event.time, lower_pressed_time) < TAPPING_TERM)) {
-                    register_code(KC_LANG2); // for macOS
-                    register_code(KC_MHEN);
-                    unregister_code(KC_MHEN);
-                    unregister_code(KC_LANG2);
+                    register_code(KC_LANGUAGE_2); // for macOS
+                    register_code(KC_INT5);
+                    unregister_code(KC_INT5);
+                    unregister_code(KC_LANGUAGE_2);
                 }
                 lower_pressed = false;
             }
@@ -185,10 +179,10 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 update_tri_layer(_LOWER, _RAISE, _ADJUST);
 
                 if (raise_pressed && (TIMER_DIFF_16(record->event.time, raise_pressed_time) < TAPPING_TERM)) {
-                    register_code(KC_LANG1); // for macOS
-                    register_code(KC_HENK);
-                    unregister_code(KC_HENK);
-                    unregister_code(KC_LANG1);
+                    register_code(KC_LANGUAGE_1); // for macOS
+                    register_code(KC_INT4);
+                    unregister_code(KC_INT4);
+                    unregister_code(KC_LANGUAGE_1);
                 }
                 raise_pressed = false;
             }
