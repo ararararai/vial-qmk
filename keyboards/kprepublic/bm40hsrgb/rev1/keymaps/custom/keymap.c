@@ -17,11 +17,13 @@
 
 
 enum custom_keycodes {
-QWERTY = SAFE_RANGE,
-DVORAK,
-LOWER,
-RAISE,
-ADJUST,
+    QWERTY = SAFE_RANGE,
+    DVORAK,
+    LOWER,
+    RAISE,
+    ADJUST,
+    BACKTICKS,
+    BACKTICKSCOPY,
 };
 
 enum layers {
@@ -122,7 +124,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 [_ADJUST] = LAYOUT_planck_mit(
     A(KC_TAB),  _______,    RGB_TOG, RGB_RMOD, RGB_MOD, RGB_HUI, RGB_HUD, RGB_SAI, RGB_SAD, RGB_VAI,  RGB_VAD, KC_DEL ,
     LCAG(KC_1), LCAG(KC_2), KC_RBRC, KC_LBRC,  KC_MPLY, _______, KC_MS_L, KC_MS_D, KC_MS_U, KC_MS_R , _______, LGUI(KC_PSCR),
-    LCAG(KC_3), LCAG(KC_4), KC_VOLD, KC_VOLU,  KC_CAPS, _______, _______, _______, _______, _______,  _______, _______,
+    LCAG(KC_3), LCAG(KC_4), KC_VOLD, KC_VOLU,  KC_CAPS, _______, _______, BACKTICKS,  BACKTICKSCOPY, _______,  _______, _______,
     _______,    _______,    _______, _______,  _______, _______,          _______, _______, _______,  _______, _______
 ),
 
@@ -140,63 +142,98 @@ static bool raise_pressed = false;
 static uint16_t raise_pressed_time = 0;
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-  switch (keycode) {
-    case LOWER:
-      if (record->event.pressed) {
-        lower_pressed = true;
-        lower_pressed_time = record->event.time;
+    switch (keycode) {
+        case LOWER:
+            if (record->event.pressed) {
+                lower_pressed = true;
+                lower_pressed_time = record->event.time;
 
-        layer_on(_LOWER);
-        update_tri_layer(_LOWER, _RAISE, _ADJUST);
-      } else {
-        layer_off(_LOWER);
-        update_tri_layer(_LOWER, _RAISE, _ADJUST);
+                layer_on(_LOWER);
+                update_tri_layer(_LOWER, _RAISE, _ADJUST);
+            } else {
+                layer_off(_LOWER);
+                update_tri_layer(_LOWER, _RAISE, _ADJUST);
 
-        if (lower_pressed && (TIMER_DIFF_16(record->event.time, lower_pressed_time) < TAPPING_TERM)) {
-          register_code(KC_LANG2); // for macOS
-          register_code(KC_MHEN);
-          unregister_code(KC_MHEN);
-          unregister_code(KC_LANG2);
-        }
-        lower_pressed = false;
-      }
-      return false;
-      break;
-    case RAISE:
-      if (record->event.pressed) {
-        raise_pressed = true;
-        raise_pressed_time = record->event.time;
+                if (lower_pressed && (TIMER_DIFF_16(record->event.time, lower_pressed_time) < TAPPING_TERM)) {
+                    register_code(KC_LANGUAGE_2); // for macOS
+                    register_code(KC_INT5);
+                    unregister_code(KC_INT5);
+                    unregister_code(KC_LANGUAGE_2);
+                }
+                lower_pressed = false;
+            }
+            return false;
+            break;
+        case RAISE:
+            if (record->event.pressed) {
+                raise_pressed = true;
+                raise_pressed_time = record->event.time;
 
-        layer_on(_RAISE);
-        update_tri_layer(_LOWER, _RAISE, _ADJUST);
-      } else {
-        layer_off(_RAISE);
-        update_tri_layer(_LOWER, _RAISE, _ADJUST);
+                layer_on(_RAISE);
+                update_tri_layer(_LOWER, _RAISE, _ADJUST);
+            } else {
+                layer_off(_RAISE);
+                update_tri_layer(_LOWER, _RAISE, _ADJUST);
 
-        if (raise_pressed && (TIMER_DIFF_16(record->event.time, raise_pressed_time) < TAPPING_TERM)) {
-          register_code(KC_LANG1); // for macOS
-          register_code(KC_HENK);
-          unregister_code(KC_HENK);
-          unregister_code(KC_LANG1);
-        }
-        raise_pressed = false;
-      }
-      return false;
-      break;
-      if (record->event.pressed) {
-        layer_on(_ADJUST);
-      } else {
-        layer_off(_ADJUST);
-      }
-      return false;
-      break;
-    default:
-      if (record->event.pressed) {
-        // reset the flags
-        lower_pressed = false;
-        raise_pressed = false;
-      }
-      break;
-  }
-  return true;
+                if (raise_pressed && (TIMER_DIFF_16(record->event.time, raise_pressed_time) < TAPPING_TERM)) {
+                    register_code(KC_LANGUAGE_1); // for macOS
+                    register_code(KC_INT4);
+                    unregister_code(KC_INT4);
+                    unregister_code(KC_LANGUAGE_1);
+                }
+                raise_pressed = false;
+            }
+            return false;
+            break;
+        case ADJUST:
+            if (record->event.pressed) {
+                layer_on(_ADJUST);
+            } else {
+                layer_off(_ADJUST);
+            }
+            return false;
+            break;
+        case BACKTICKS:
+            // claudeでコードブロックを挿入するショートカット
+            // Shift + Enter(改行)  ↑(カーソルを上に)  ```(コードブロック)  Shift + Enter
+            if (record->event.pressed) {
+                register_code(KC_LSFT);
+                tap_code(KC_ENT);
+                tap_code(KC_ENT);
+                unregister_code(KC_LSFT);
+                tap_code(KC_UP);
+                SEND_STRING("```");
+                register_code(KC_LSFT);
+                tap_code(KC_ENT);
+                unregister_code(KC_LSFT);
+            }
+            return false;
+            break;
+        case BACKTICKSCOPY:
+            if (record->event.pressed) {
+                register_code(KC_LSFT);
+                tap_code(KC_ENT);
+                tap_code(KC_ENT);
+                unregister_code(KC_LSFT);
+                tap_code(KC_UP);
+                SEND_STRING("```");
+                register_code(KC_LSFT);
+                tap_code(KC_ENT);
+                unregister_code(KC_LSFT);
+                register_code(KC_LCTL);
+                tap_code(KC_V);
+                unregister_code(KC_LCTL);
+                tap_code(KC_DOWN);
+            }
+            return false;
+            break;
+        default:
+            if (record->event.pressed) {
+                // reset the flags
+                lower_pressed = false;
+                raise_pressed = false;
+            }
+            break;
+    }
+    return true;
 }
