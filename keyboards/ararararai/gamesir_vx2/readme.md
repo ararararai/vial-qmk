@@ -32,12 +32,12 @@ GameSir VX2の筐体を流用したRP2040ベースの有線片手キーボード
 
 ## キーマップ
 
-ROW0: ESC,  NO,   F1,   F2,   F3,   F4,   F5
+ROW0: ESC,  F1,   F2,   F3,   F4,   F5
 ROW1: `,    1,    2,    3,    4,    5,    6
-ROW2: TAB,  Q,    W,    E,    R,    NO,   T
-ROW3: CAPS, A,    S,    D,    F,    NO,   G
-ROW4: LSFT, Z,    X,    C,    V,    NO,   B
-ROW5: LCTL, Fn,   LALT, SPC,  NO,   NO,   M
+ROW2: TAB,  Q,    W,    E,    R,    T
+ROW3: CAPS, A,    S,    D,    F,    G
+ROW4: LSFT, Z,    X,    C,    V,    B
+ROW5: LCTL, Fn,   LALT, SPC,  M
 
 ## ビルド方法
 
