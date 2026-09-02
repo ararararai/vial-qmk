@@ -65,10 +65,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * `--------------------------------------------------------------------------------------------------'
  */
 [_QWERTY] = LAYOUT(
-    KC_UP,    KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_ESC,  KC_Y,    KC_U,    KC_I,    KC_O,   KC_P,    KC_BSPC,
-    KC_RIGHT, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_QUOT, KC_H,    KC_J,    KC_K,    KC_L,   KC_SCLN, KC_MINS,
-    KC_LEFT,  KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_DEL,  KC_N,    KC_M,    KC_COMM, KC_DOT, KC_SLSH, KC_ENT,
-    KC_DOWN,  KC_LCTL, KC_LALT, KC_LSFT, LOWER,   KC_TAB,  KC_SPC,  RAISE,   KC_LCMD, KC_LCTL, KC_MEH, KC_MEH
+    LCTL(KC_V),    KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_ESC,  KC_Y,    KC_U,    KC_I,    KC_O,   KC_P,    KC_BSPC,
+    LCTL(KC_C), KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_QUOT, KC_H,    KC_J,    KC_K,    KC_L,   KC_SCLN, KC_MINS,
+    LCTL(KC_PLUS),  KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_DEL,  KC_N,    KC_M,    KC_COMM, KC_DOT, KC_SLSH, KC_ENT,
+    LCTL(KC_MINS),  KC_LCTL, KC_F12,  KC_LSFT, LOWER,   KC_TAB,  KC_SPC,  RAISE,   KC_LCMD, LGUI(LSFT(KC_S)), LGUI(LCTL(KC_T)), KC_LALT
 ),
 
 [_DVORAK] = LAYOUT(
